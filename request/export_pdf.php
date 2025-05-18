@@ -209,7 +209,7 @@ $pdf->Ln($logoHeight + 5);
 
 // --- QR CODE À GAUCHE, INFOS CLIENT À DROITE (alignés sur la même ligne) ---
 // Générer le QR code
-$qrCodeData = 'https://fidest.ci/devis/request/export_pdf.php?devisId=' . $devis['id'];
+$qrCodeData = 'https://app.cafici.net/request/export_pdf.php?devisId=' . $devis['id'];
 $qrCodeFile = '../qrCodeFile/qrcode.png';
 QRcode::png($qrCodeData, $qrCodeFile, 'L', 4, 2);
 
