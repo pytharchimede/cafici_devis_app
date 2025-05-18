@@ -62,7 +62,7 @@ class Devis
         $stmt->execute();
         $nb_devis = $stmt->fetch(PDO::FETCH_ASSOC)['nb'];
         $index_actuel = $nb_devis + 1;
-        return 'BAN-DEV-PAB-' . $index_actuel;
+        return 'CAFI-DEV-' . $index_actuel;
     }
 
     public function getDevisFiltres($filtres = [])
@@ -98,7 +98,6 @@ class Devis
     }
 
 
-
     public function creerDevis($data, $lignes)
     {
         $sql = "INSERT INTO devis (numero_devis, delai_livraison, date_emission, date_expiration, emis_par, destine_a, termes_conditions, pied_de_page, total_ht, total_ttc, logo, client_id, offre_id, tva_facturable, publier_devis, tva, correspondant)
@@ -110,17 +109,17 @@ class Devis
 
         // Enregistrer les lignes de devis
         foreach ($lignes as $ligne) {
-            $sqlLigne = "INSERT INTO ligne_devis (devis_id, designation, prix, quantite, unite_id, total, groupe)
-                         VALUES (:devis_id, :designation, :prix, :quantite, :unite_id, :total, :groupe)";
+            $sqlLigne = "INSERT INTO ligne_devis (devis_id, designation, prix, quantite, tva, remise, total)
+                         VALUES (:devis_id, :designation, :prix, :quantite, :tva, :remise, :total)";
             $stmtLigne = $this->pdo->prepare($sqlLigne);
             $stmtLigne->execute([
-                'devis_id'   => $devisId,
+                'devis_id'    => $devisId,
                 'designation' => $ligne['designation'],
-                'prix'       => $ligne['prix'],
-                'quantite'   => $ligne['quantite'],
-                'unite_id'   => $ligne['unite_id'],
-                'total'      => $ligne['total'],
-                'groupe'     => $ligne['groupe'], // <-- ajout ici
+                'prix'        => $ligne['prix'],
+                'quantite'    => $ligne['quantite'],
+                'tva'         => $ligne['tva'],
+                'remise'      => $ligne['remise'],
+                'total'       => $ligne['total'],
             ]);
         }
 

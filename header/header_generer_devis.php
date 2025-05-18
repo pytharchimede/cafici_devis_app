@@ -17,8 +17,4 @@ $devis = $devisObj->getAllDevis();
 $clients = $clientObj->getAllClients();
 $offres = $offreObj->getAllOffres();
 
-
-$nb_devis = count($devis);
-$index_actuel = $nb_devis + 1;
-
-$code_devis = 'CAFI-DEV-PAB-' . $index_actuel;
+$code_devis = $devisObj->getNextCode();

@@ -111,28 +111,28 @@ $textY = $enteteY;
 // Préparer les 4 lignes (inchangé)
 $lines = [
     [
-        'text' => 'BANAMUR INDUSTRIES ET TECHNOLOGIES',
+        'text' => 'CAFICI S.A.R.L',
         'size' => 16,
         'style' => 'B',
         'color' => [0, 0, 0],
         'font' => 'Arial'
     ],
     [
-        'text' => 'BATIMENT-TRAVAUX PUBLICS',
+        'text' => 'ACHAT ET VENTE FOURNITURES INDUSTRIELLES',
         'size' => 13,
         'style' => '',
         'color' => [0, 0, 0],
         'font' => 'Arial'
     ],
     [
-        'text' => 'RENOVATION ET TRAVAUX NEUF',
+        'text' => 'MAINTENANCE INDUSTRIELLE - BTP - IMPORT-EXPORT',
         'size' => 13,
         'style' => 'B',
         'color' => [255, 204, 0],
         'font' => 'Arial'
     ],
     [
-        'text' => 'TUYAUTERIE-CHAUDRENERIE-CHARPENTE METALLIQUE',
+        'text' => 'COMMERCE GENERAL, DIVERSES PRESTATIONS DE SERVICES.',
         'size' => 14,
         'style' => '',
         'color' => [0, 0, 0],
@@ -236,10 +236,9 @@ $pdf->SetDrawColor(169, 169, 169);
 $tableHeight = 7;
 
 $pdf->Cell(10, $tableHeight, Utils::toMbConvertEncoding('N°'), 1, 0, 'C', true);
-$pdf->Cell(65, $tableHeight, Utils::toMbConvertEncoding('Désignation'), 1, 0, 'C', true);
-$pdf->Cell(20, $tableHeight, Utils::toMbConvertEncoding('Qté'), 1, 0, 'C', true);
-$pdf->Cell(25, $tableHeight, Utils::toMbConvertEncoding('U'), 1, 0, 'C', true);
-$pdf->Cell(30, $tableHeight, Utils::toMbConvertEncoding('PU'), 1, 0, 'C', true);
+$pdf->Cell(90, $tableHeight, Utils::toMbConvertEncoding('Désignation'), 1, 0, 'C', true);
+$pdf->Cell(25, $tableHeight, Utils::toMbConvertEncoding('Qté'), 1, 0, 'C', true);
+$pdf->Cell(35, $tableHeight, Utils::toMbConvertEncoding('PU'), 1, 0, 'C', true);
 $pdf->Cell(40, $tableHeight, Utils::toMbConvertEncoding('PT'), 1, 0, 'C', true);
 $pdf->Ln();
 
@@ -268,9 +267,9 @@ foreach ($lignes as $index => $ligne) {
             // Afficher le sous-total du groupe précédent si besoin
             if ($currentGroup !== null) {
                 // $pdf->SetFont('BookAntiqua', 'B', 10);
-                // Fusionne toutes les colonnes sauf la dernière (10+65+20+25+30 = 150mm)
-                $pdf->Cell(150, 10, Utils::toMbConvertEncoding('SOUS-TOTAL ' . strtoupper($currentGroup)), 1, 0, 'C');
-                // Colonne "Prix total" (30mm) pour le montant, bordure complète
+                // Fusionne toutes les colonnes sauf la dernière (10+90+25+35 = 160mm)
+                $pdf->Cell(160, 10, Utils::toMbConvertEncoding('SOUS-TOTAL ' . strtoupper($currentGroup)), 1, 0, 'C');
+                // Colonne "Prix total" (40mm) pour le montant, bordure complète
                 $pdf->Cell(40, 10, number_format($groupTotal, 0, ',', ' ') . ' XOF', 1, 1, 'C');
                 $pdf->Ln(2);
             }
@@ -293,7 +292,7 @@ foreach ($lignes as $index => $ligne) {
     $maxChars = 50;
 
     // Largeurs des colonnes
-    $w = [10, 65, 20, 25, 30, 40];
+    $w = [10, 90, 25, 35, 40];
     $lineHeight = 7;
 
     // Préparer la désignation
@@ -315,7 +314,7 @@ foreach ($lignes as $index => $ligne) {
     $pdf->SetXY($x, $y);
     $pdf->Cell($w[0], $cellHeight, $pos++, 1, 0, 'C');
 
-    // Désignation (une seule ligne)
+    // Désignation
     $pdf->SetFont('Arial', 'B', 8);
     $pdf->SetXY($x + $w[0], $y);
     $pdf->Cell($w[1], $cellHeight, $designation, 1, 0, 'L');
@@ -324,15 +323,14 @@ foreach ($lignes as $index => $ligne) {
     // Qté
     $pdf->SetXY($x + $w[0] + $w[1], $y);
     $pdf->Cell($w[2], $cellHeight, $ligne['quantite'], 1, 0, 'C');
-    // U
-    $pdf->SetXY($x + $w[0] + $w[1] + $w[2], $y);
-    $pdf->Cell($w[3], $cellHeight, Utils::toMbConvertEncoding($unite), 1, 0, 'C');
+
     // PU
-    $pdf->SetXY($x + $w[0] + $w[1] + $w[2] + $w[3], $y);
-    $pdf->Cell($w[4], $cellHeight, number_format($ligne['prix'], 0, ',', ' ') . ' XOF', 1, 0, 'C');
+    $pdf->SetXY($x + $w[0] + $w[1] + $w[2], $y);
+    $pdf->Cell($w[3], $cellHeight, number_format($ligne['prix'], 0, ',', ' ') . ' XOF', 1, 0, 'C');
+
     // PT
-    $pdf->SetXY($x + $w[0] + $w[1] + $w[2] + $w[3] + $w[4], $y);
-    $pdf->Cell($w[5], $cellHeight, number_format($ligne['total'], 0, ',', ' ') . ' XOF', 1, 0, 'C');
+    $pdf->SetXY($x + $w[0] + $w[1] + $w[2] + $w[3], $y);
+    $pdf->Cell($w[4], $cellHeight, number_format($ligne['total'], 0, ',', ' ') . ' XOF', 1, 0, 'C');
 
     // Se placer tout à gauche, à la nouvelle ligne
     $pdf->SetXY($x, $y + $cellHeight);
@@ -344,9 +342,9 @@ foreach ($lignes as $index => $ligne) {
         if ($index === array_key_last($lignes) && $currentGroup !== null) {
             $pdf->SetFont('Arial', 'B', 10);
 
-            // Fusionne toutes les colonnes sauf la dernière (10+65+20+25+30 = 150mm)
-            $pdf->Cell(150, 8, Utils::toMbConvertEncoding('SOUS-TOTAL ' . strtoupper($currentGroup)), 1, 0, 'C');
-            // Colonne "Prix total" (30mm) pour le montant, bordure complète
+            // Fusionne toutes les colonnes sauf la dernière (10+90+25+35 = 160mm)
+            $pdf->Cell(160, 8, Utils::toMbConvertEncoding('SOUS-TOTAL ' . strtoupper($currentGroup)), 1, 0, 'C');
+            // Colonne "Prix total" (40mm) pour le montant, bordure complète
             $pdf->Cell(40, 8, number_format($groupTotal, 0, ',', ' ') . ' XOF', 1, 1, 'C');
             $pdf->Ln(2);
         }
@@ -355,18 +353,18 @@ foreach ($lignes as $index => $ligne) {
 
 // Ligne Montant HT
 $pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(150, 8, Utils::toMbConvertEncoding('MONTANT HT'), 1, 0, 'C');
+$pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT HT'), 1, 0, 'C');
 $pdf->Cell(40, 8, number_format($devis['total_ht'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
 
 // Ligne TVA
 if ($devis['tva_facturable'] == 1) {
-    $pdf->Cell(150, 8, Utils::toMbConvertEncoding('TVA 18%'), 1, 0, 'C');
+    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('TVA 18%'), 1, 0, 'C');
     $pdf->Cell(40, 8, number_format($devis['tva'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
 } else {
     // Libellé explicite
     $pdf->SetFont('Arial', 'I', 10);
     $pdf->SetTextColor(120, 120, 120);
-    $pdf->Cell(150, 8, Utils::toMbConvertEncoding('TVA 18% (non facturée)'), 1, 0, 'C');
+    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('TVA 18% (non facturée)'), 1, 0, 'C');
     // Montant barré (simulateur: affiche en gris, italique, entre parenthèses)
     $pdf->SetFont('Arial', 'I', 10);
     $pdf->SetTextColor(180, 180, 180);
@@ -378,10 +376,10 @@ if ($devis['tva_facturable'] == 1) {
 
 // Ligne Montant TTC
 if ($devis['tva_facturable'] == 1) {
-    $pdf->Cell(150, 8, Utils::toMbConvertEncoding('MONTANT TTC'), 1, 0, 'C');
+    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT TTC'), 1, 0, 'C');
     $pdf->Cell(40, 8, number_format($devis['total_ttc'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
 } else {
-    $pdf->Cell(150, 8, Utils::toMbConvertEncoding('MONTANT NET À PAYER'), 1, 0, 'C');
+    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT NET À PAYER'), 1, 0, 'C');
     $pdf->Cell(40, 8, number_format($devis['total_ht'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
 }
 
