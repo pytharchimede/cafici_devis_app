@@ -207,20 +207,21 @@ foreach ($lines as $i => $line) {
 $pdf->SetTextColor(0, 0, 0);
 $pdf->Ln($logoHeight + 5);
 
-// --- QR CODE À GAUCHE, INFOS CLIENT À DROITE (compact et haut) ---
+// --- QR CODE À GAUCHE, INFOS CLIENT À DROITE (alignés sur la même ligne) ---
 // Générer le QR code
 $qrCodeData = 'https://fidest.ci/devis/request/export_pdf.php?devisId=' . $devis['id'];
 $qrCodeFile = '../qrCodeFile/qrcode.png';
 QRcode::png($qrCodeData, $qrCodeFile, 'L', 4, 2);
 
 // Dimensions et positions
+$qrSize = 24; // taille du QR code en mm
 $qrX = 12;
 $qrY = $enteteY + $logoHeight + 12;
-$qrSize = 24; // taille du QR code en mm
 
-$blocW = 80; // largeur réduite du bloc client
-$blocH = 38; // hauteur augmentée pour tout contenir
-$blocX = $qrX + $qrSize + 8; // à droite du QR code
+// Bloc client à droite du QR code
+$blocW = 80; // largeur du bloc client
+$blocH = 38; // hauteur du bloc client
+$blocX = 210 - 10 - $blocW; // aligné à droite avec une marge de 10mm
 $blocY = $qrY;
 
 // Ombre légère derrière le bloc client
@@ -236,20 +237,13 @@ $pdf->RoundedRect($blocX, $blocY, $blocW, $blocH, 3, 'DF');
 // Afficher le QR code à gauche
 $pdf->Image($qrCodeFile, $qrX, $qrY, $qrSize, $qrSize);
 
+// Texte du bloc client (centré verticalement dans le bloc)
 $dateEmission = Utils::dateEnToutesLettres($devis['date_emission']);
-
 $ligne1 = "Abidjan, le $dateEmission";
-
-// Ligne 2 : Nom du client
 $ligne2 = $client['nom_client'];
-
-// Ligne 3 : Localisation
 $ligne3 = $client['localisation_client'];
-
-// Ligne 4 : BP
 $ligne4 = $client['bp_client'];
 
-// Texte du bloc client (centré verticalement dans le bloc)
 $pdf->SetXY($blocX, $blocY + 4);
 $pdf->SetFont('Arial', '', 10);
 $pdf->SetTextColor(80, 80, 80); // gris foncé
