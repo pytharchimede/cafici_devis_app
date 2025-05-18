@@ -13,6 +13,150 @@ include 'header/header_generer_devis.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #8aabb3, #00a584);
+            color: #1d2b57;
+        }
+
+        .navbar {
+            background-color: #00a584;
+        }
+
+        .navbar-brand img {
+            height: 50px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: #8aabb3 !important;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #00a584;
+            border-color: #00a584;
+        }
+
+        .btn-primary:hover {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+        }
+
+        .btn-secondary {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #00a584;
+            border-color: #00a584;
+            color: #fff;
+        }
+
+        .footer {
+            background-color: #00a584;
+            color: #ffffff;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .footer .social-icons a {
+            color: #8aabb3;
+            margin: 0 10px;
+            font-size: 20px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer .social-icons a:hover {
+            color: #fff;
+        }
+
+        h1,
+        h2 {
+            color: #00a584;
+            font-weight: bold;
+        }
+
+        .checkbox_zone {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #8aabb3;
+            border-radius: 10px;
+        }
+
+        .checkbox_zone .form-group {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .checkbox_zone label {
+            margin: 10px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        .switch input:checked+.slider {
+            background-color: #00a584;
+        }
+
+        .table input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .chart-container,
+        .menu-card {
+            background: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            color: #00a584;
+        }
+
+        .menu-card:hover {
+            border-color: #8aabb3;
+        }
+
+        #logoUploadContainer {
+            position: relative;
+            width: 100%;
+            max-width: 150px;
+            height: 150px;
+            border: 2px dashed #8aabb3;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        #logoUploadContainer.drag-over {
+            border-color: #00a584;
+            background-color: #e9ecef;
+        }
+
+        .logo-message {
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
@@ -21,7 +165,7 @@ include 'header/header_generer_devis.php';
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img style="width:auto; height:50px;" src="https://app.fidest.ci/logi/img/logo_connex.jpg" alt="Logo">
+                <img style="width:auto; height:50px;" src="img/logo.jpg" alt="Logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

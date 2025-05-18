@@ -34,20 +34,196 @@ foreach ($devis as $de) {
 <html lang="fr">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Liste des Devis - BTP</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/custom_style_liste_devis.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #8aabb3, #00a584);
+            color: #1d2b57;
+        }
 
+        .navbar {
+            background-color: #00a584;
+        }
+
+        .navbar-brand img {
+            height: 50px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: #8aabb3 !important;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #00a584;
+            border-color: #00a584;
+        }
+
+        .btn-primary:hover {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+        }
+
+        .btn-secondary {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #00a584;
+            border-color: #00a584;
+            color: #fff;
+        }
+
+        .footer {
+            background-color: #00a584;
+            color: #ffffff;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .footer .social-icons a {
+            color: #8aabb3;
+            margin: 0 10px;
+            font-size: 20px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer .social-icons a:hover {
+            color: #fff;
+        }
+
+        h1,
+        h2 {
+            color: #00a584;
+            font-weight: bold;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 0.75rem;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.08);
+            color: #1d2b57;
+            transition: box-shadow 0.3s, border-color 0.3s;
+            border: 2px solid #8aabb3;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-header {
+            background: #8aabb3;
+            color: #fff;
+            font-weight: bold;
+            border-top-left-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        .card-footer {
+            background: #f8f9fa;
+            border-bottom-left-radius: 0.75rem;
+            border-bottom-right-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .btn-view,
+        .btn-hide,
+        .btn-edit,
+        .btn-validate {
+            background: #00a584;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.95rem;
+            margin-right: 0.3rem;
+            transition: background 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-view:hover,
+        .btn-edit:hover,
+        .btn-validate:hover {
+            background: #8aabb3;
+            color: #fff;
+        }
+
+        .btn-hide {
+            background: #8aabb3;
+        }
+
+        .btn-hide:hover {
+            background: #00a584;
+        }
+
+        .footer-validation {
+            padding: 0.5rem 1rem 1rem 1rem;
+            text-align: right;
+        }
+
+        .btn-validate.commerciale {
+            background: #00a584;
+        }
+
+        .btn-validate.generale {
+            background: #8aabb3;
+        }
+
+        .btn-validate:hover {
+            background: #00a584;
+        }
+
+        .validated {
+            color: #00a584;
+            font-weight: bold;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -62,7 +238,7 @@ foreach ($devis as $de) {
 
             <a class="navbar-brand" href="#">
 
-                <img src="https://app.fidest.ci/logi/img/logo_connex.jpg" alt="Logo">
+                <img src="img/logo.jpg" alt="Logo">
 
             </a>
 

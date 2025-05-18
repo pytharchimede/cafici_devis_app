@@ -8,13 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/style_login.css">
     <style>
-        /* Global styles */
         body,
         html {
             height: 100%;
             margin: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #1d2b57, #14203e);
+            background: linear-gradient(135deg, #8aabb3, #00a584);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -38,7 +37,7 @@
         }
 
         .login-container h2 {
-            color: #1d2b57;
+            color: #00a584;
             font-size: 1.8rem;
             margin-bottom: 1rem;
             font-weight: bold;
@@ -55,20 +54,21 @@
             padding: 0.8rem;
             font-size: 1rem;
             border-radius: 5px;
-            border: 1px solid #ddd;
+            border: 1px solid #8aabb3;
             background: #f9f9f9;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, border-color 0.3s;
+            color: #1d2b57;
         }
 
         .login-container input[type="text"]:focus,
         .login-container input[type="password"]:focus {
-            background: #f1f1f1;
+            background: #eaf6f5;
             outline: none;
-            border-color: #1d2b57;
+            border-color: #00a584;
         }
 
         .login-container button {
-            background: #1d2b57;
+            background: #00a584;
             color: #ffffff;
             padding: 0.8rem;
             font-size: 1rem;
@@ -80,7 +80,7 @@
         }
 
         .login-container button:hover {
-            background: #14203e;
+            background: #8aabb3;
             transform: translateY(-3px);
         }
 
@@ -89,20 +89,20 @@
         }
 
         .login-container .forgot-password {
-            color: #1d2b57;
+            color: #00a584;
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.3s ease;
         }
 
         .login-container .forgot-password:hover {
-            color: #14203e;
+            color: #8aabb3;
         }
 
         .login-footer {
             margin-top: 1.5rem;
             font-size: 0.9rem;
-            color: #aaa;
+            color: #8aabb3;
         }
 
         @keyframes fadeIn {
@@ -122,7 +122,7 @@
 <body>
     <div class="login-container">
         <!-- Logo -->
-        <img src="https://app.fidest.ci/logi/img/logo_connex.jpg" alt="Logo">
+        <img src="img/logo.jpg" alt="Logo">
 
         <!-- Title -->
         <h2>Connexion à votre Espace</h2>
@@ -144,7 +144,7 @@
         <a href="reset_password.php" class="forgot-password">Mot de passe oublié ?</a>
 
         <!-- Footer -->
-        <div class="login-footer">© 2024 Logiciel de Devis - FIDEST</div>
+        <div class="login-footer">© 2024 Logiciel de Devis - CAFICI</div>
     </div>
     <script src="js/login.js"></script>
 </body>

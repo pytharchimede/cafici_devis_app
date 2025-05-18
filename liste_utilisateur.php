@@ -20,15 +20,17 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Liste des Utilisateurs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Ajout de FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <style>
         body {
-            background-color: #f4f6f9;
-            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #8aabb3, #00a584);
+            font-family: 'Poppins', Arial, sans-serif;
+            color: #1d2b57;
         }
 
         .navbar {
-            background-color: #1d2b57;
+            background-color: #00a584;
         }
 
         .navbar-brand img {
@@ -40,7 +42,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .nav-link.active {
-            color: #ffc107 !important;
+            color: #8aabb3 !important;
         }
 
         .container {
@@ -48,19 +50,55 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         h1 {
-            color: #1d2b57;
+            color: #00a584;
             font-weight: 600;
             margin-bottom: 30px;
         }
 
-        .btn-primary {
-            background-color: #fabd02;
-            border-color: #fabd02;
+        .btn-primary,
+        .btn-success {
+            background-color: #00a584;
+            border-color: #00a584;
         }
 
-        .btn-primary:hover {
-            background-color: #e0a800;
-            border-color: #e0a800;
+        .btn-primary:hover,
+        .btn-success:hover {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+        }
+
+        .btn-warning {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+            color: #fff;
+        }
+
+        .btn-warning:hover {
+            background-color: #00a584;
+            border-color: #00a584;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #00a584;
+            border-color: #00a584;
+            color: #fff;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
         }
 
         .card {
@@ -73,6 +111,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         .card:hover {
             transform: scale(1.05);
+            border: 2px solid #8aabb3;
         }
 
         .card-img-top {
@@ -90,7 +129,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         .card-title {
             font-weight: 600;
-            color: #1d2b57;
+            color: #00a584;
         }
 
         .card-text {
@@ -108,17 +147,13 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .footer {
-            background-color: #1d2b57;
+            background-color: #00a584;
             color: #fff;
             padding: 15px 0;
             text-align: center;
             position: fixed;
             bottom: 0;
             width: 100%;
-        }
-
-        .card-deck .card {
-            margin-bottom: 20px;
         }
 
         .photo-profile {

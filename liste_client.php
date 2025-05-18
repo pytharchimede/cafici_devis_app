@@ -13,6 +13,121 @@ include 'header/header_liste_client.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/custom_style_client.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #8aabb3, #00a584);
+            color: #1d2b57;
+        }
+
+        .navbar {
+            background-color: #00a584;
+        }
+
+        .navbar-brand img {
+            height: 50px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: #8aabb3 !important;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #00a584;
+            border-color: #00a584;
+        }
+
+        .btn-primary:hover {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+        }
+
+        .btn-secondary {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #00a584;
+            border-color: #00a584;
+            color: #fff;
+        }
+
+        .client-card {
+            background: #fff;
+            border-radius: 0.75rem;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.08);
+            color: #1d2b57;
+            border: 2px solid #8aabb3;
+            transition: box-shadow 0.3s, border-color 0.3s;
+            min-height: 250px;
+        }
+
+        .client-card:hover {
+            border-color: #00a584;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.13);
+        }
+
+        .client-name {
+            font-weight: bold;
+            color: #00a584;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .client-info {
+            color: #1d2b57;
+            font-size: 0.97rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .modal-header,
+        .modal-title {
+            background: #8aabb3;
+            color: #fff;
+            border-top-left-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+        }
+
+        .modal-content {
+            border-radius: 0.75rem;
+        }
+
+        .footer {
+            background-color: #00a584;
+            color: #ffffff;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .footer .social-icons a {
+            color: #8aabb3;
+            margin: 0 10px;
+            font-size: 20px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer .social-icons a:hover {
+            color: #fff;
+        }
+
+        h1,
+        h2 {
+            color: #00a584;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>

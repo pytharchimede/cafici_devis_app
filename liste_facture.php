@@ -10,12 +10,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        body {
+            background: linear-gradient(135deg, #8aabb3, #00a584);
+            color: #1d2b57;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: #00a584;
+        }
+
+        .navbar-brand img {
+            height: 50px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: #8aabb3 !important;
+            font-weight: bold;
+        }
+
         .page-container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f8f9fa;
+            background: transparent;
         }
 
         .spinner-container {
@@ -27,12 +51,41 @@
             width: 5rem;
             height: 5rem;
             border-width: 0.25em;
+            color: #00a584 !important;
         }
 
         .spinner-container h1 {
             margin-top: 20px;
             font-size: 2rem;
             font-weight: bold;
+            color: #00a584;
+        }
+
+        .spinner-container p {
+            color: #8aabb3;
+            font-size: 1.1rem;
+        }
+
+        .footer {
+            background-color: #00a584;
+            color: #fff;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .footer .social-icons a {
+            color: #8aabb3;
+            margin: 0 10px;
+            font-size: 20px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer .social-icons a:hover {
+            color: #fff;
         }
     </style>
 </head>
@@ -43,7 +96,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img style="width:auto; height:50px;" src="https://app.fidest.ci/logi/img/logo_connex.jpg" alt="Logo">
+                <img style="width:auto; height:50px;" src="img/logo.jpg" alt="Logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

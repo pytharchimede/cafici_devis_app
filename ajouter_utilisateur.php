@@ -50,14 +50,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Ajouter un Utilisateur</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <style>
         body {
-            background-color: #f4f6f9;
-            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #8aabb3, #00a584);
+            font-family: 'Poppins', Arial, sans-serif;
+            color: #1d2b57;
         }
 
         .navbar {
-            background-color: #1d2b57;
+            background-color: #00a584;
         }
 
         .navbar-brand img {
@@ -69,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .nav-link.active {
-            color: #ffc107 !important;
+            color: #8aabb3 !important;
         }
 
         .container {
@@ -77,19 +79,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         h1 {
-            color: #1d2b57;
+            color: #00a584;
             font-weight: 600;
             margin-bottom: 30px;
         }
 
         .btn-primary {
-            background-color: #fabd02;
-            border-color: #fabd02;
+            background-color: #00a584;
+            border-color: #00a584;
         }
 
         .btn-primary:hover {
-            background-color: #e0a800;
-            border-color: #e0a800;
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+        }
+
+        .btn-secondary {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #00a584;
+            border-color: #00a584;
+            color: #fff;
         }
 
         .form-control {
@@ -103,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .footer {
-            background-color: #1d2b57;
+            background-color: #00a584;
             color: #fff;
             padding: 15px 0;
             text-align: center;
@@ -121,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .card-header {
-            background-color: #1d2b57;
+            background-color: #8aabb3;
             color: white;
             font-size: 18px;
             font-weight: bold;
@@ -131,12 +145,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display: flex;
             align-items: center;
             margin-right: 20px;
-            /* Ajout d'une marge entre les interrupteurs */
         }
 
         .form-switch input {
             width: 40px;
-            /* Augmenter la taille du bouton interrupteur */
             height: 22px;
             cursor: pointer;
         }
@@ -149,9 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .form-switch-container {
             display: flex;
             flex-wrap: wrap;
-            /* Permet aux interrupteurs de passer à la ligne suivante si besoin */
             gap: 15px;
-            /* Espacement entre les éléments */
         }
     </style>
 </head>

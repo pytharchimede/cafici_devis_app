@@ -66,14 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Gérer mon Profil</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #8aabb3, #00a584);
+            color: #1d2b57;
         }
 
         .navbar {
-            background-color: #1d2b57;
+            background-color: #00a584;
         }
 
         .navbar-brand img {
@@ -85,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .navbar-nav .nav-link.active {
-            color: #fabd02 !important;
+            color: #8aabb3 !important;
         }
 
         .container {
@@ -94,10 +96,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .card {
             border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
+            border: 2px solid #8aabb3;
         }
 
         .card-header {
-            background-color: #1d2b57;
+            background-color: #8aabb3;
             color: white;
             font-size: 20px;
             font-weight: bold;
@@ -117,13 +121,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .btn-primary {
-            background-color: #fabd02;
-            border-color: #fabd02;
+            background-color: #00a584;
+            border-color: #00a584;
         }
 
         .btn-primary:hover {
-            background-color: #e0a800;
-            border-color: #e0a800;
+            background-color: #8aabb3;
+            border-color: #8aabb3;
         }
 
         .photo-profile img {
@@ -132,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             height: 150px;
             object-fit: cover;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 3px solid #8aabb3;
         }
 
         .photo-preview {
@@ -141,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .footer {
-            background-color: #1d2b57;
+            background-color: #00a584;
             color: white;
             text-align: center;
             padding: 20px;

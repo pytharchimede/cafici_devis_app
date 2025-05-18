@@ -13,6 +13,152 @@ include 'header/header_liste_offre.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/custom_style_liste_offre.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #8aabb3, #00a584);
+            color: #1d2b57;
+        }
+
+        .navbar {
+            background-color: #00a584;
+        }
+
+        .navbar-brand img {
+            height: 50px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: #8aabb3 !important;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #00a584;
+            border-color: #00a584;
+        }
+
+        .btn-primary:hover {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+        }
+
+        .btn-secondary {
+            background-color: #8aabb3;
+            border-color: #8aabb3;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #00a584;
+            border-color: #00a584;
+            color: #fff;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 0.75rem;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.08);
+            color: #1d2b57;
+            border: 2px solid #8aabb3;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: #00a584;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.13);
+        }
+
+        .card-header {
+            background: #8aabb3;
+            color: #fff;
+            font-weight: bold;
+            border-top-left-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        .card-footer {
+            background: #f8f9fa;
+            border-bottom-left-radius: 0.75rem;
+            border-bottom-right-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .footer {
+            background-color: #00a584;
+            color: #ffffff;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .footer .social-icons a {
+            color: #8aabb3;
+            margin: 0 10px;
+            font-size: 20px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer .social-icons a:hover {
+            color: #fff;
+        }
+
+        h1,
+        h2 {
+            color: #00a584;
+            font-weight: bold;
+        }
+
+        /* Dropzone style */
+        #drop_zone {
+            border: 2px dashed #8aabb3;
+            background: #fffbe6;
+            color: #1d2b57;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        #drop_zone:hover,
+        #drop_zone:focus {
+            border-color: #00a584;
+            background: #fdd96c;
+        }
+
+        #file_list div {
+            background: #fffbe6;
+            border: 1px solid #fdd96c;
+        }
+    </style>
 </head>
 
 <body>

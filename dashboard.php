@@ -13,11 +13,12 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f7f9;
+            background: linear-gradient(135deg, #8aabb3, #00a584);
+            color: #ffffff;
         }
 
         .navbar {
-            background-color: #1d2b57;
+            background-color: #00a584;
         }
 
         .navbar-brand img {
@@ -29,7 +30,7 @@
         }
 
         .nav-link.active {
-            color: #ffc107 !important;
+            color: #8aabb3 !important;
         }
 
         .menu-card {
@@ -41,26 +42,28 @@
             padding: 1.5rem;
             margin: 1rem;
             position: relative;
+            border: 2px solid #8aabb3;
         }
 
         .menu-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: #00a584;
         }
 
         .menu-card i {
             font-size: 3rem;
-            color: #1d2b57;
+            color: #00a584;
         }
 
         .menu-card p {
             margin-top: 1rem;
             font-weight: bold;
-            color: #333;
+            color: #00a584;
         }
 
         .footer {
-            background-color: #1d2b57;
+            background-color: #00a584;
             color: #fff;
             padding: 1rem 0;
             position: relative;
@@ -78,11 +81,22 @@
         }
 
         .footer .social-icons a:hover {
-            color: #ffc107;
+            color: #8aabb3;
         }
 
         .chart-container {
             margin: 2rem 0;
+            background: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            color: #00a584;
+        }
+
+        h1,
+        h2 {
+            color: #00a584;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -93,7 +107,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="https://app.fidest.ci/logi/img/logo_connex.jpg" alt="Logo">
+                <img src="img/logo.jpg" alt="Logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
