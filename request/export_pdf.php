@@ -84,6 +84,51 @@ class PDF extends FPDF
         }
         return $nl;
     }
+
+    function _Arc($x1, $y1, $x2, $y2, $x3, $y3)
+    {
+        $h = $this->h;
+        $this->_out(sprintf(
+            '%.2F %.2F %.2F %.2F %.2F %.2F c',
+            $x1 * $this->k,
+            ($h - $y1) * $this->k,
+            $x2 * $this->k,
+            ($h - $y2) * $this->k,
+            $x3 * $this->k,
+            ($h - $y3) * $this->k
+        ));
+    }
+
+    function RoundedRect($x, $y, $w, $h, $r, $style = '')
+    {
+        $k = $this->k;
+        $hp = $this->h;
+        if ($style == 'F')
+            $op = 'f';
+        elseif ($style == 'FD' || $style == 'DF')
+            $op = 'B';
+        else
+            $op = 'S';
+        $MyArc = 4 / 3 * (sqrt(2) - 1);
+        $this->_out(sprintf('%.2F %.2F m', ($x + $r) * $k, ($hp - $y) * $k));
+        $xc = $x + $w - $r;
+        $yc = $y + $r;
+        $this->_out(sprintf('%.2F %.2F l', $xc * $k, ($hp - $y) * $k));
+        $this->_Arc($xc + $r * $MyArc, $yc - $r, $xc + $r, $yc - $r * $MyArc, $xc + $r, $yc);
+        $xc = $x + $w - $r;
+        $yc = $y + $h - $r;
+        $this->_out(sprintf('%.2F %.2F l', ($x + $w) * $k, ($hp - $yc) * $k));
+        $this->_Arc($xc + $r, $yc + $r * $MyArc, $xc + $r * $MyArc, $yc + $r, $xc, $yc + $r);
+        $xc = $x + $r;
+        $yc = $y + $h - $r;
+        $this->_out(sprintf('%.2F %.2F l', $xc * $k, ($hp - ($y + $h)) * $k));
+        $this->_Arc($xc - $r * $MyArc, $yc + $r, $xc - $r, $yc + $r * $MyArc, $xc - $r, $yc);
+        $xc = $x + $r;
+        $yc = $y + $r;
+        $this->_out(sprintf('%.2F %.2F l', $x * $k, ($hp - $yc) * $k));
+        $this->_Arc($xc - $r, $yc - $r * $MyArc, $xc - $r * $MyArc, $yc - $r, $xc, $yc - $r);
+        $this->_out($op);
+    }
 }
 
 // Créez un nouvel objet FPDF
@@ -103,13 +148,21 @@ $enteteX = 10;
 $enteteY = 15;
 $enteteW = 190;
 
-// Afficher le logo à gauche
+// --- EN-TÊTE AVEC COULEUR ---
+$headerBg = [0, 165, 132];   // #00a584
+$headerText = [255, 255, 255]; // blanc
+
+// Rectangle de fond pour l'en-tête
+$pdf->SetFillColor($headerBg[0], $headerBg[1], $headerBg[2]);
+$pdf->Rect(0, 10, 210, $logoHeight + 10, 'F');
+
+// Logo à gauche
 $pdf->Image($logoPath, $enteteX, $enteteY, $logoWidth, $logoHeight);
 
 // --- TEXTE ENTÊTE ---
 $textW = 110; // largeur du bloc texte à droite (ajuste si besoin)
 $textX = $enteteX + 60; // décale à droite du logo (ajuste selon la largeur max de ton logo)
-$textY = $enteteY;
+$textY = $enteteY + 2;
 
 // Préparer les lignes
 $lines = [
@@ -143,36 +196,48 @@ $lines = [
     ],
 ];
 
-// Calculer la hauteur d'une ligne pour occuper exactement la hauteur du logo
-$lineH = $logoHeight / count($lines);
-
-// Afficher chaque ligne centrée dans la zone texte, alignée verticalement avec le logo
-for ($i = 0; $i < count($lines); $i++) {
-    $pdf->SetXY($textX, $textY + $i * $lineH);
-    $pdf->SetFont($lines[$i]['font'], $lines[$i]['style'], $lines[$i]['size']);
-    $pdf->SetTextColor($lines[$i]['color'][0], $lines[$i]['color'][1], $lines[$i]['color'][2]);
-    $pdf->Cell($textW, $lineH, Utils::toMbConvertEncoding($lines[$i]['text']), 0, 0, 'C');
+$pdf->SetTextColor($headerText[0], $headerText[1], $headerText[2]);
+foreach ($lines as $i => $line) {
+    $pdf->SetFont($line['font'], $line['style'], $line['size']);
+    $pdf->SetXY($textX, $textY + $i * 8);
+    $pdf->Cell($textW, 8, Utils::toMbConvertEncoding($line['text']), 0, 0, 'L');
 }
 
 // Remettre la couleur noire pour la suite
 $pdf->SetTextColor(0, 0, 0);
 $pdf->Ln($logoHeight + 5);
 
+// --- QR CODE À GAUCHE, INFOS CLIENT À DROITE (compact et haut) ---
 // Générer le QR code
 $qrCodeData = 'https://fidest.ci/devis/request/export_pdf.php?devisId=' . $devis['id'];
 $qrCodeFile = '../qrCodeFile/qrcode.png';
 QRcode::png($qrCodeData, $qrCodeFile, 'L', 4, 2);
 
-// Positionner le QR code 
-$pdf->Image($qrCodeFile, 16, 62, 15);
+// Dimensions et positions
+$qrX = 12;
+$qrY = $enteteY + $logoHeight + 12;
+$qrSize = 24; // taille du QR code en mm
 
-// Positionnement pour le bloc client à droite sous l'entête
-$blocW = 63; // 1/3 de 190mm
-$blocX = 127; // 190 - 63 = 127, mais on laisse 10mm de marge à droite
-$blocY = $enteteY + $logoHeight + 5;
+$blocW = 80; // largeur réduite du bloc client
+$blocH = 38; // hauteur augmentée pour tout contenir
+$blocX = $qrX + $qrSize + 8; // à droite du QR code
+$blocY = $qrY;
 
-// Ligne 1 : Date en français (remplace strftime)
+// Ombre légère derrière le bloc client
+$pdf->SetFillColor(230, 236, 235); // gris très clair
+$pdf->Rect($blocX + 2, $blocY + 2, $blocW, $blocH, 'F');
+
+// Bloc principal (fond blanc, bordure verte, coins arrondis)
+$pdf->SetDrawColor(0, 165, 132); // vert CAFICI
+$pdf->SetLineWidth(0.7);
+$pdf->SetFillColor(255, 255, 255); // blanc
+$pdf->RoundedRect($blocX, $blocY, $blocW, $blocH, 3, 'DF');
+
+// Afficher le QR code à gauche
+$pdf->Image($qrCodeFile, $qrX, $qrY, $qrSize, $qrSize);
+
 $dateEmission = Utils::dateEnToutesLettres($devis['date_emission']);
+
 $ligne1 = "Abidjan, le $dateEmission";
 
 // Ligne 2 : Nom du client
@@ -184,29 +249,33 @@ $ligne3 = $client['localisation_client'];
 // Ligne 4 : BP
 $ligne4 = $client['bp_client'];
 
-// Affichage
-$pdf->SetXY($blocX, $blocY);
-$pdf->SetFont('Arial', '', 11);
-$pdf->Cell($blocW, 7, Utils::toMbConvertEncoding($ligne1), 0, 2, 'C');
+// Texte du bloc client (centré verticalement dans le bloc)
+$pdf->SetXY($blocX, $blocY + 4);
+$pdf->SetFont('Arial', '', 10);
+$pdf->SetTextColor(80, 80, 80); // gris foncé
+$pdf->Cell($blocW, 6, Utils::toMbConvertEncoding($ligne1), 0, 2, 'C');
 
-$pdf->SetFont('Arial', 'B', 15);
-$pdf->Cell($blocW, 9, Utils::toMbConvertEncoding($ligne2), 0, 2, 'C');
+$pdf->SetFont('Arial', 'B', 13);
+$pdf->SetTextColor(0, 165, 132); // vert CAFICI
+$pdf->Cell($blocW, 8, Utils::toMbConvertEncoding($ligne2), 0, 2, 'C');
 
-$pdf->SetFont('Arial', '', 11);
-$pdf->Cell($blocW, 7, Utils::toMbConvertEncoding($ligne3), 0, 2, 'C');
+$pdf->SetFont('Arial', '', 10);
+$pdf->SetTextColor(80, 80, 80);
+$pdf->Cell($blocW, 6, Utils::toMbConvertEncoding($ligne3), 0, 2, 'C');
+$pdf->Cell($blocW, 6, Utils::toMbConvertEncoding($ligne4), 0, 2, 'C');
 
-$pdf->Cell($blocW, 7, Utils::toMbConvertEncoding($ligne4), 0, 2, 'C');
-
-// Revenir à la position normale pour la suite
-$pdf->Ln(5);
-
-
-
-
-// Afficher la référence de l'offre comme titre, centré, grand, gras et encadré, avec retour à la ligne si besoin
-$pdf->SetFont('Arial', 'B', 14);
-$pdf->SetDrawColor(0, 0, 0);
+// Remettre les couleurs par défaut pour la suite
 $pdf->SetTextColor(0, 0, 0);
+$pdf->SetDrawColor(0, 0, 0);
+$pdf->SetLineWidth(0.2);
+
+// Avance le curseur pour ne pas chevaucher le tableau
+$pdf->SetY($blocY + $blocH + 7);
+
+// --- TITRE DEVIS ---
+$pdf->SetFont('Arial', 'B', 15);
+$pdf->SetTextColor($headerBg[0], $headerBg[1], $headerBg[2]);
+$pdf->SetDrawColor($headerBg[0], $headerBg[1], $headerBg[2]);
 $pdf->SetFillColor(255, 255, 255);
 
 $refText = Utils::toMbConvertEncoding(strtoupper($offre['reference_offre']));
@@ -220,20 +289,17 @@ if ($textWidth > $maxWidth) $textWidth = $maxWidth;
 $pageWidth = 210 - 20; // A4 - marges (10mm de chaque côté)
 $startX = 10 + ($pageWidth - $textWidth) / 2;
 
-// Afficher le cadre autour du texte, MultiCell pour retour à la ligne
 $pdf->SetX($startX);
-$pdf->MultiCell($textWidth, 7, $refText, 1, 'C', true);
+$pdf->MultiCell($textWidth, 9, $refText, 1, 'C', false);
 
 // Ajouter un petit espace après le bloc
 $pdf->Ln(8);
 
-// Tableau des lignes du devis
+// --- TABLEAU ---
 $pdf->SetFont('Arial', 'B', 12);
-
-
-$pdf->SetFillColor(0, 0, 0);
+$pdf->SetFillColor($headerBg[0], $headerBg[1], $headerBg[2]);
 $pdf->SetTextColor(255, 255, 255);
-$pdf->SetDrawColor(169, 169, 169);
+$pdf->SetDrawColor($headerBg[0], $headerBg[1], $headerBg[2]);
 
 $tableHeight = 7;
 
@@ -244,182 +310,63 @@ $pdf->Cell(35, $tableHeight, Utils::toMbConvertEncoding('PU'), 1, 0, 'C', true);
 $pdf->Cell(30, $tableHeight, Utils::toMbConvertEncoding('PT'), 1, 0, 'C', true);
 $pdf->Ln();
 
+$pdf->SetFont('Arial', '', 10);
 $pdf->SetTextColor(0, 0, 0);
-$pdf->SetFillColor(255, 255, 255);
-$pdf->SetDrawColor(0, 0, 0);
 
-// Vérifier s'il y a au moins un groupe renseigné
-$hasGroup = false;
-foreach ($lignes as $l) {
-    if (!empty($l['groupe'])) {
-        $hasGroup = true;
-        break;
-    }
-}
-
-$currentGroup = null;
-$groupTotal = 0;
+$rowFill = false;
 $pos = 1;
 
 foreach ($lignes as $index => $ligne) {
-    // Mode groupé
-    if ($hasGroup) {
-        // Nouveau groupe
-        if ($ligne['groupe'] !== $currentGroup) {
-            // Afficher le sous-total du groupe précédent si besoin
-            if ($currentGroup !== null) {
-                // $pdf->SetFont('BookAntiqua', 'B', 10);
-                // Fusionne toutes les colonnes sauf la dernière (10+90+25+35 = 160mm)
-                $pdf->Cell(160, 10, Utils::toMbConvertEncoding('SOUS-TOTAL ' . strtoupper($currentGroup)), 1, 0, 'C');
-                // Colonne "Prix total" (40mm) pour le montant, bordure complète
-                $pdf->Cell(30, 10, number_format($groupTotal, 0, ',', ' ') . ' XOF', 1, 1, 'C');
-                $pdf->Ln(2);
-            }
-            // Afficher le titre du groupe si présent
-            if (!empty($ligne['groupe'])) {
-                // $pdf->SetFont('BookAntiqua', 'B', 10);
-                $pdf->SetFillColor(230, 230, 230);
-                // Colonne N° sans bordure droite, même couleur de fond
-                $pdf->Cell(10, 8, '', 'LTB', 0, '', true); // L=Left, T=Top, B=Bottom (pas de R=Right)
-                // Colonne groupe, bordure complète, même couleur de fond
-                $pdf->Cell(180, 8, Utils::toMbConvertEncoding(strtoupper($ligne['groupe'])), 'R', 1, 'L', true);
-                $pdf->SetFillColor(255, 255, 255);
-            }
-            $currentGroup = $ligne['groupe'];
-            $groupTotal = 0;
-        }
-    }
-
-    // Limite de caractères pour la désignation
-    $maxChars = 50;
-
-    // Largeurs des colonnes
-    $w = [10, 90, 25, 35, 30];
-    $lineHeight = 7;
-
-    // Préparer la désignation
-    $designationFull = Utils::toMbConvertEncoding($ligne['designation']);
-    if (mb_strlen($designationFull) > $maxChars) {
-        $designation = mb_substr($designationFull, 0, $maxChars - 3) . '...';
-    } else {
-        $designation = $designationFull;
-    }
-
-    // Calculer la hauteur (1 ligne)
-    $cellHeight = $lineHeight;
-
-    // Sauvegarder la position X/Y de départ
-    $x = $pdf->GetX();
-    $y = $pdf->GetY();
-
-    // N°
-    $pdf->SetXY($x, $y);
-    $pdf->Cell($w[0], $cellHeight, $pos++, 1, 0, 'C');
-
-    // Désignation
+    $pdf->SetFillColor($rowFill ? 245 : 255, $rowFill ? 255 : 255, $rowFill ? 255 : 255); // alternance
+    $pdf->Cell(10, $tableHeight, $pos++, 1, 0, 'C', $rowFill);
     $pdf->SetFont('Arial', 'B', 8);
-    $pdf->SetXY($x + $w[0], $y);
-    $pdf->Cell($w[1], $cellHeight, $designation, 1, 0, 'L');
+    $pdf->Cell(90, $tableHeight, Utils::toMbConvertEncoding($ligne['designation']), 1, 0, 'L', $rowFill);
     $pdf->SetFont('Arial', '', 8);
-
-    // Qté
-    $pdf->SetXY($x + $w[0] + $w[1], $y);
-    $pdf->Cell($w[2], $cellHeight, $ligne['quantite'], 1, 0, 'C');
-
-    // PU
-    $pdf->SetXY($x + $w[0] + $w[1] + $w[2], $y);
-    $pdf->Cell($w[3], $cellHeight, number_format($ligne['prix'], 0, ',', ' ') . ' XOF', 1, 0, 'C');
-
-    // PT
-    $pdf->SetXY($x + $w[0] + $w[1] + $w[2] + $w[3], $y);
-    $pdf->Cell($w[4], $cellHeight, number_format($ligne['total'], 0, ',', ' ') . ' XOF', 1, 0, 'C');
-
-    // Se placer tout à gauche, à la nouvelle ligne
-    $pdf->SetXY($x, $y + $cellHeight);
-
-    // Additionner au sous-total du groupe
-    if ($hasGroup) {
-        $groupTotal += $ligne['total'];
-        // Si c'est la dernière ligne, afficher le sous-total du groupe si besoin
-        if ($index === array_key_last($lignes) && $currentGroup !== null) {
-            $pdf->SetFont('Arial', 'B', 10);
-
-            // Fusionne toutes les colonnes sauf la dernière (10+90+25+35 = 160mm)
-            $pdf->Cell(160, 8, Utils::toMbConvertEncoding('SOUS-TOTAL ' . strtoupper($currentGroup)), 1, 0, 'C');
-            // Colonne "Prix total" (40mm) pour le montant, bordure complète
-            $pdf->Cell(30, 8, number_format($groupTotal, 0, ',', ' ') . ' XOF', 1, 1, 'C');
-            $pdf->Ln(2);
-        }
-    }
+    $pdf->Cell(25, $tableHeight, $ligne['quantite'], 1, 0, 'C', $rowFill);
+    $pdf->Cell(35, $tableHeight, number_format($ligne['prix'], 0, ',', ' ') . ' XOF', 1, 0, 'C', $rowFill);
+    $pdf->Cell(30, $tableHeight, number_format($ligne['total'], 0, ',', ' ') . ' XOF', 1, 0, 'C', $rowFill);
+    $pdf->Ln();
+    $rowFill = !$rowFill;
 }
 
-// Ligne Montant HT
-$pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT HT'), 1, 0, 'C');
-$pdf->Cell(30, 8, number_format($devis['total_ht'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
+// --- TOTAUX ---
+$pdf->SetFont('Arial', 'B', 11);
+$pdf->SetFillColor($headerBg[0], $headerBg[1], $headerBg[2]);
+$pdf->SetTextColor(255, 255, 255);
+$pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT HT'), 1, 0, 'C', true);
+$pdf->Cell(30, 8, number_format($devis['total_ht'], 0, ',', ' ') . ' XOF', 1, 1, 'C', true);
 
-// Ligne TVA
 if ($devis['tva_facturable'] == 1) {
-    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('TVA 18%'), 1, 0, 'C');
-    $pdf->Cell(30, 8, number_format($devis['tva'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
+    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('TVA 18%'), 1, 0, 'C', true);
+    $pdf->Cell(30, 8, number_format($devis['tva'], 0, ',', ' ') . ' XOF', 1, 1, 'C', true);
+    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT TTC'), 1, 0, 'C', true);
+    $pdf->Cell(30, 8, number_format($devis['total_ttc'], 0, ',', ' ') . ' XOF', 1, 1, 'C', true);
 } else {
-    // Libellé explicite
-    $pdf->SetFont('Arial', 'I', 10);
-    $pdf->SetTextColor(120, 120, 120);
-    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('TVA 18% (non facturée)'), 1, 0, 'C');
-    // Montant barré (simulateur: affiche en gris, italique, entre parenthèses)
-    $pdf->SetFont('Arial', 'I', 10);
-    $pdf->SetTextColor(180, 180, 180);
-    $pdf->Cell(30, 8, '(' . number_format(0.18 * $devis['total_ht'], 0, ',', ' ') . ' XOF)', 1, 1, 'C');
-    // Remettre police normale et couleur noire
-    $pdf->SetFont('Arial', 'B', 10);
-    $pdf->SetTextColor(0, 0, 0);
+    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('TVA 18% (non facturée)'), 1, 0, 'C', true);
+    $pdf->Cell(30, 8, '(' . number_format(0.18 * $devis['total_ht'], 0, ',', ' ') . ' XOF)', 1, 1, 'C', true);
+    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT NET À PAYER'), 1, 0, 'C', true);
+    $pdf->Cell(30, 8, number_format($devis['total_ht'], 0, ',', ' ') . ' XOF', 1, 1, 'C', true);
 }
+$pdf->SetTextColor(0, 0, 0);
 
-// Ligne Montant TTC
-if ($devis['tva_facturable'] == 1) {
-    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT TTC'), 1, 0, 'C');
-    $pdf->Cell(30, 8, number_format($devis['total_ttc'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
-} else {
-    $pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT NET À PAYER'), 1, 0, 'C');
-    $pdf->Cell(30, 8, number_format($devis['total_ht'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
-}
-
+// --- MONTANT EN LETTRES ---
 $pdf->Ln(5);
-
-// Ligne 1 : Arrêtée la présente facture à la somme de :
 $pdf->SetFont('Arial', 'U', 8);
 $pdf->Cell(0, 6, Utils::toMbConvertEncoding("Arrêtée le présent devis à la somme de :"), 0, 1, 'L');
-
-// Ligne 2 : Montant TTC en lettres (grand, gras, multiligne si besoin)
 $montantLettre = Utils::montantEnLettre($devis['total_ttc']);
 $pdf->SetFont('Arial', 'B', 10);
 $pdf->MultiCell(0, 6, Utils::toMbConvertEncoding(strtoupper($montantLettre)), 0, 'L');
 
-// Ligne 3 : CONDITIONS DE REGLEMENT
-// $pdf->SetFont('Arial', 'U', 8);
-// $pdf->Cell(0, 6, Utils::toMbConvertEncoding("CONDITIONS DE REGLEMENT :"), 0, 1, 'L');
-// $pdf->SetFont('Arial', 'B', 8);
-// $pdf->MultiCell(0, 6, Utils::toMbConvertEncoding("Paiement 60 jours après réception du devis"), 0, 'L');
-
-// Espace pour la signature du Directeur Commercial
-$pdf->Ln(5); // espace avant la zone de signature
-
-// Position horizontale à droite (ajuste si besoin)
-$signatureX = 130;
-$pdf->SetXY($signatureX, $pdf->GetY());
-
-// "DIRECTEUR TECHNIQUE" en majuscule, souligné
+// --- SIGNATURE ---
+$pdf->Ln(8);
 $pdf->SetFont('Arial', 'U', 10);
-$pdf->Cell(70, 7, Utils::toMbConvertEncoding('DIRECTEUR COMMERCIAL'), 0, 2, 'C');
-
-// Nom du directeur technique (remplace par le vrai nom si besoin)
+$pdf->SetTextColor($headerBg[0], $headerBg[1], $headerBg[2]);
+$pdf->Cell(0, 7, Utils::toMbConvertEncoding('DIRECTEUR COMMERCIAL'), 0, 1, 'R');
 $pdf->SetFont('Arial', 'B', 11);
-$pdf->Cell(70, 8, Utils::toMbConvertEncoding('NOM DU DIRECTEUR'), 0, 2, 'C');
-
-// Espace pour cachet et signature
+$pdf->SetTextColor(0, 0, 0);
+$pdf->Cell(0, 8, Utils::toMbConvertEncoding('NOM DU DIRECTEUR'), 0, 1, 'R');
 $pdf->SetFont('Arial', '', 9);
-$pdf->Cell(70, 20, Utils::toMbConvertEncoding('(Cachet et signature)'), 0, 2, 'C');
+$pdf->Cell(0, 20, Utils::toMbConvertEncoding('(Cachet et signature)'), 0, 1, 'R');
 
 ob_clean();
 
