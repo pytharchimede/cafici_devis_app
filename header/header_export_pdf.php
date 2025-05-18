@@ -1,13 +1,19 @@
 <?php
 
-include('../fpdf186/fpdf.php');
-require_once("../phpqrcode/qrlib.php");
-require_once("../model/User.php");
-require_once("../model/Database.php");
-require_once("../model/Devis.php");
-require_once("../model/Client.php");
-require_once("../model/Offre.php");
-require_once("../model/UniteMesure.php");
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once(__DIR__ . "/../fpdf186/fpdf.php");
+require_once(__DIR__ . "/../phpqrcode/qrlib.php");
+require_once(__DIR__ . "/../model/User.php");
+require_once(__DIR__ . "/../model/Database.php");
+require_once(__DIR__ . "/../model/Devis.php");
+require_once(__DIR__ . "/../model/Client.php");
+require_once(__DIR__ . "/../model/Offre.php");
+require_once(__DIR__ . "/../model/UniteMesure.php");
+require_once(__DIR__ . "/../model/Utils.php");
+
 
 $pdo = Database::getConnection();
 $userObj = new User($pdo);

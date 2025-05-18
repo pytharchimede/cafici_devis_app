@@ -93,22 +93,25 @@ $pdf->SetFont('Arial', 'B', 16);
 $pdf->AliasNbPages();
 
 // Dimensions
+$logoHeight = 30; // hauteur en mm
+$logoWidth = 0;   // largeur automatique selon le ratio
 $logoPath = '../logo/' . ($devis['logo'] ?? 'default_logo.jpg');
-$logoWidth = 40;
-$logoHeight = 40;
+if (empty($devis['logo']) || !file_exists($logoPath) || !@getimagesize($logoPath)) {
+    $logoPath = '../img/logo.png';
+}
 $enteteX = 10;
-$enteteY = 10;
+$enteteY = 15;
 $enteteW = 190;
 
 // Afficher le logo à gauche
 $pdf->Image($logoPath, $enteteX, $enteteY, $logoWidth, $logoHeight);
 
-// Zone de texte à droite du logo
-$textX = $enteteX + $logoWidth + 5;
-$textW = $enteteW - $logoWidth - 5;
+// --- TEXTE ENTÊTE ---
+$textW = 110; // largeur du bloc texte à droite (ajuste si besoin)
+$textX = $enteteX + 60; // décale à droite du logo (ajuste selon la largeur max de ton logo)
 $textY = $enteteY;
 
-// Préparer les 4 lignes (inchangé)
+// Préparer les lignes
 $lines = [
     [
         'text' => 'CAFICI S.A.R.L',
@@ -132,7 +135,7 @@ $lines = [
         'font' => 'Arial'
     ],
     [
-        'text' => 'COMMERCE GENERAL, DIVERSES PRESTATIONS DE SERVICES.',
+        'text' => 'COMMERCE GENERAL, DIVERS...',
         'size' => 14,
         'style' => '',
         'color' => [0, 0, 0],
@@ -169,8 +172,7 @@ $blocX = 127; // 190 - 63 = 127, mais on laisse 10mm de marge à droite
 $blocY = $enteteY + $logoHeight + 5;
 
 // Ligne 1 : Date en français (remplace strftime)
-$fmt = new IntlDateFormatter('fr_FR', IntlDateFormatter::LONG, IntlDateFormatter::NONE, 'Africa/Abidjan', IntlDateFormatter::GREGORIAN, 'dd MMMM yyyy');
-$dateEmission = $fmt->format(new DateTime($devis['date_emission']));
+$dateEmission = Utils::dateEnToutesLettres($devis['date_emission']);
 $ligne1 = "Abidjan, le $dateEmission";
 
 // Ligne 2 : Nom du client
