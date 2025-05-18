@@ -29,11 +29,11 @@ class PDF extends FPDF
         $this->SetFont('Arial', '', 7);
 
         // Ligne 1
-        $this->Cell(0, 3.5, Utils::toMbConvertEncoding("S.A.R.L au Capital de 100 000 000 FCFA - Siège Social: Abidjan, Koumassi Bd. du Gabon prolongé – 01 BP 1642 Abidjan 01"), 0, 1, 'C');
+        $this->Cell(0, 3.5, Utils::toMbConvertEncoding("S.A.R.L au Capital de 1 000 000 FCFA - Siège Social: ABIDJAN KOUMASSI ZONE INDUSTRIELLE EN FACE DU GARAGE AKWABA LOT 26"), 0, 1, 'C');
         // Ligne 2
-        $this->Cell(0, 3.5, Utils::toMbConvertEncoding("RCCM N°: CI-ABJ-03-2022-B13-02828 – Tél. : +225 27 21 36 27 27 / 27 21 36 09 29 – Fax : 27 21 36 05 75"), 0, 1, 'C');
+        $this->Cell(0, 3.5, Utils::toMbConvertEncoding("RCCM N°: CI-ABJ-03-2024-B13-01193 - Tél. : (+225) 07 89 77 42 45/05 76 05 27 28"), 0, 1, 'C');
         // Ligne 3
-        $this->Cell(0, 3.5, Utils::toMbConvertEncoding("E-mail: banacerf1@gmail.com - Compte Bancaire BDU N° : CI180 01010 020401144580 11"), 0, 1, 'C');
+        $this->Cell(0, 3.5, Utils::toMbConvertEncoding("E-mail: commercial@cafici.net - Compte Bancaire BDA N° : C193 CI201 01001 109179715491 10"), 0, 1, 'C');
 
         // Numéro de page
         $this->Cell(0, 10, Utils::toMbConvertEncoding('Page ' . $this->PageNo() . '/{nb}'), 0, 0, 'C');
@@ -239,7 +239,7 @@ $pdf->Cell(10, $tableHeight, Utils::toMbConvertEncoding('N°'), 1, 0, 'C', true)
 $pdf->Cell(90, $tableHeight, Utils::toMbConvertEncoding('Désignation'), 1, 0, 'C', true);
 $pdf->Cell(25, $tableHeight, Utils::toMbConvertEncoding('Qté'), 1, 0, 'C', true);
 $pdf->Cell(35, $tableHeight, Utils::toMbConvertEncoding('PU'), 1, 0, 'C', true);
-$pdf->Cell(40, $tableHeight, Utils::toMbConvertEncoding('PT'), 1, 0, 'C', true);
+$pdf->Cell(30, $tableHeight, Utils::toMbConvertEncoding('PT'), 1, 0, 'C', true);
 $pdf->Ln();
 
 $pdf->SetTextColor(0, 0, 0);
@@ -270,7 +270,7 @@ foreach ($lignes as $index => $ligne) {
                 // Fusionne toutes les colonnes sauf la dernière (10+90+25+35 = 160mm)
                 $pdf->Cell(160, 10, Utils::toMbConvertEncoding('SOUS-TOTAL ' . strtoupper($currentGroup)), 1, 0, 'C');
                 // Colonne "Prix total" (40mm) pour le montant, bordure complète
-                $pdf->Cell(40, 10, number_format($groupTotal, 0, ',', ' ') . ' XOF', 1, 1, 'C');
+                $pdf->Cell(30, 10, number_format($groupTotal, 0, ',', ' ') . ' XOF', 1, 1, 'C');
                 $pdf->Ln(2);
             }
             // Afficher le titre du groupe si présent
@@ -292,7 +292,7 @@ foreach ($lignes as $index => $ligne) {
     $maxChars = 50;
 
     // Largeurs des colonnes
-    $w = [10, 90, 25, 35, 40];
+    $w = [10, 90, 25, 35, 30];
     $lineHeight = 7;
 
     // Préparer la désignation
@@ -345,7 +345,7 @@ foreach ($lignes as $index => $ligne) {
             // Fusionne toutes les colonnes sauf la dernière (10+90+25+35 = 160mm)
             $pdf->Cell(160, 8, Utils::toMbConvertEncoding('SOUS-TOTAL ' . strtoupper($currentGroup)), 1, 0, 'C');
             // Colonne "Prix total" (40mm) pour le montant, bordure complète
-            $pdf->Cell(40, 8, number_format($groupTotal, 0, ',', ' ') . ' XOF', 1, 1, 'C');
+            $pdf->Cell(30, 8, number_format($groupTotal, 0, ',', ' ') . ' XOF', 1, 1, 'C');
             $pdf->Ln(2);
         }
     }
@@ -354,12 +354,12 @@ foreach ($lignes as $index => $ligne) {
 // Ligne Montant HT
 $pdf->SetFont('Arial', 'B', 10);
 $pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT HT'), 1, 0, 'C');
-$pdf->Cell(40, 8, number_format($devis['total_ht'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
+$pdf->Cell(30, 8, number_format($devis['total_ht'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
 
 // Ligne TVA
 if ($devis['tva_facturable'] == 1) {
     $pdf->Cell(160, 8, Utils::toMbConvertEncoding('TVA 18%'), 1, 0, 'C');
-    $pdf->Cell(40, 8, number_format($devis['tva'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
+    $pdf->Cell(30, 8, number_format($devis['tva'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
 } else {
     // Libellé explicite
     $pdf->SetFont('Arial', 'I', 10);
@@ -368,7 +368,7 @@ if ($devis['tva_facturable'] == 1) {
     // Montant barré (simulateur: affiche en gris, italique, entre parenthèses)
     $pdf->SetFont('Arial', 'I', 10);
     $pdf->SetTextColor(180, 180, 180);
-    $pdf->Cell(40, 8, '(' . number_format(0.18 * $devis['total_ht'], 0, ',', ' ') . ' XOF)', 1, 1, 'C');
+    $pdf->Cell(30, 8, '(' . number_format(0.18 * $devis['total_ht'], 0, ',', ' ') . ' XOF)', 1, 1, 'C');
     // Remettre police normale et couleur noire
     $pdf->SetFont('Arial', 'B', 10);
     $pdf->SetTextColor(0, 0, 0);
@@ -377,10 +377,10 @@ if ($devis['tva_facturable'] == 1) {
 // Ligne Montant TTC
 if ($devis['tva_facturable'] == 1) {
     $pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT TTC'), 1, 0, 'C');
-    $pdf->Cell(40, 8, number_format($devis['total_ttc'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
+    $pdf->Cell(30, 8, number_format($devis['total_ttc'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
 } else {
     $pdf->Cell(160, 8, Utils::toMbConvertEncoding('MONTANT NET À PAYER'), 1, 0, 'C');
-    $pdf->Cell(40, 8, number_format($devis['total_ht'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
+    $pdf->Cell(30, 8, number_format($devis['total_ht'], 0, ',', ' ') . ' XOF', 1, 1, 'C');
 }
 
 $pdf->Ln(5);
@@ -400,7 +400,7 @@ $pdf->MultiCell(0, 6, Utils::toMbConvertEncoding(strtoupper($montantLettre)), 0,
 // $pdf->SetFont('Arial', 'B', 8);
 // $pdf->MultiCell(0, 6, Utils::toMbConvertEncoding("Paiement 60 jours après réception du devis"), 0, 'L');
 
-// Espace pour la signature du Directeur Technique
+// Espace pour la signature du Directeur Commercial
 $pdf->Ln(5); // espace avant la zone de signature
 
 // Position horizontale à droite (ajuste si besoin)
@@ -409,7 +409,7 @@ $pdf->SetXY($signatureX, $pdf->GetY());
 
 // "DIRECTEUR TECHNIQUE" en majuscule, souligné
 $pdf->SetFont('Arial', 'U', 10);
-$pdf->Cell(70, 7, Utils::toMbConvertEncoding('DIRECTEUR TECHNIQUE'), 0, 2, 'C');
+$pdf->Cell(70, 7, Utils::toMbConvertEncoding('DIRECTEUR COMMERCIAL'), 0, 2, 'C');
 
 // Nom du directeur technique (remplace par le vrai nom si besoin)
 $pdf->SetFont('Arial', 'B', 11);
